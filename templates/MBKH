@@ -1,0 +1,1 @@
+npm install --global eas-cli && npx create-expo-app mbkhwaitlistv1- && cd mbkhwaitlistv1- && eas init --id ab32b455-f6da-445f-830a-13de23d673cfmbkhwaitlistv1-
