@@ -3,22 +3,30 @@ name: Check issues with pending validation labels
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '0 8 * * *' # 8:00 AM UTC time every day
+    - cron: '0 8 * * *' # Runs at 08:00 AM UTC every day
 
 jobs:
   validate-pending-issues:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
     steps:
       - name: 👀 Checkout
         uses: actions/checkout@v4
+
       - name: ➕ Add `bin` to GITHUB_PATH
         run: echo "$(pwd)/bin" >> $GITHUB_PATH
+
       - name: ♻️ Restore caches
         uses: ./.github/actions/expo-caches
         id: expo-caches
         with:
           yarn-tools: 'true'
-      - name: 🔎 Validate issues with pending labels
+
+      - name: 🔍 Validate issues with pending labels
         run: expotools validate-issue --issue "*"
         env:
-          GITHUB_TOKEN: ${{ secrets.EXPO_BOT_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  
